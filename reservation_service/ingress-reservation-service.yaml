@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reservation-service-ingress
+spec:
+  rules:
+  - host: reservation-service.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: reservation-service
+            port:
+              number: 8002

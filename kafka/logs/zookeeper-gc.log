@@ -15,3 +15,8 @@
 [2025-04-19T15:03:50.784+0000][gc,metaspace ] GC(0) Metaspace: 7814K(8192K)->7814K(8192K) NonClass: 6933K(7168K)->6933K(7168K) Class: 881K(1024K)->881K(1024K)
 [2025-04-19T15:03:50.784+0000][gc           ] GC(0) Pause Young (Normal) (G1 Evacuation Pause) 25M->5M(512M) 78.460ms
 [2025-04-19T15:03:50.784+0000][gc,cpu       ] GC(0) User=0.01s Sys=0.07s Real=0.08s
+[2025-04-19T16:24:57.838+0000][gc,heap,exit ] Heap
+[2025-04-19T16:24:57.839+0000][gc,heap,exit ]  garbage-first heap   total 524288K, used 14195K [0x00000000e0000000, 0x0000000100000000)
+[2025-04-19T16:24:57.839+0000][gc,heap,exit ]   region size 1024K, 13 young (13312K), 4 survivors (4096K)
+[2025-04-19T16:24:57.839+0000][gc,heap,exit ]  Metaspace       used 8536K, capacity 8845K, committed 8960K, reserved 1056768K
+[2025-04-19T16:24:57.839+0000][gc,heap,exit ]   class space    used 905K, capacity 1014K, committed 1024K, reserved 1048576K

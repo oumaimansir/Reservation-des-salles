@@ -12,7 +12,7 @@ app.include_router(routes.router)
 def listen_to_auth_topic():
     consumer = KafkaConsumer(
         'auth-topic',
-        bootstrap_servers='localhost:9092',
+        bootstrap_servers='kafka:9092',
         group_id='reservation-group',
         value_deserializer=lambda m: json.loads(m.decode('utf-8'))
     )

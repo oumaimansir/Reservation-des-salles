@@ -1,0 +1,75 @@
+version: '3.9'
+
+services:
+  auth_service:
+    build: ./auth_service
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./auth_service:/app
+    depends_on:
+      - kafka
+      - postgres   
+    entrypoint: ["./wait-for-it.sh", "kafka:9092", "--", "python", "-m", "app.main"]
+  reservation_service:
+    build: ./reservation_service
+    ports:
+      - "8002:8000"
+    volumes:
+      - ./reservation_service:/app
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://myuser:123456@postgres:5432/authdb
+  salle_service:
+    build: ./salle_service
+    ports:
+      - "8003:8000"
+    volumes:
+      - ./salle_service:/app
+    depends_on:
+      - postgres
+  kafka:
+    image: bitnami/kafka:latest
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+      KAFKA_CFG_LISTENER_NAME_INTERNAL: INSIDE
+      KAFKA_CFG_LISTENER_NAME_OUTSIDE: OUTSIDE
+      KAFKA_CFG_LISTENER_PORT: 9092
+      KAFKA_CFG_LISTENER_INTERNAL_PORT: 9093
+      KAFKA_CFG_LISTENER_NAME: INSIDE
+      KAFKA_CFG_PROCESS_ROLES: broker,controller
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_CFG_LISTENERS: INSIDE://kafka:9092,OUTSIDE://0.0.0.0:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: INSIDE://kafka:9092,OUTSIDE://localhost:9093
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: INSIDE
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: 123456
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
