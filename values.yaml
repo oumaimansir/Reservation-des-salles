@@ -1,0 +1,8 @@
+resources:
+  requests:
+    cpu: 500m  # Set CPU request to a reasonable amount
+    memory: 2Gi
+  limits:
+    cpu: 1000m  # Set CPU limit to something higher than request but reasonable
+    memory: 4Gi
+

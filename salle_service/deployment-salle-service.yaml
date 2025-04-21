@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: salle-service
-        image: oumaimansir/salle-service:latest
+        image: oumaimansir/salle_service:v2
         ports:
         - containerPort: 8000
         env:
